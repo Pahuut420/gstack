@@ -1,0 +1,7 @@
+{
+  "tool_name": "Bash",
+  "tool_input_preview": "{\"command\":\"find .omc -type f | head -50; echo \\\"---\\\"; cat .gitignore 2>/dev/null | grep -i omc; echo \\\"---check global gitignore---\\\"; git check-ignore -v .omc 2>&1\"}",
+  "error": "Exit code 1\n.omc/project-memory.json\n.omc/state/idle-notif-cooldown.json\n.omc/state/agent-replay-80f3200d-572d-4a4e-b43d-794469716689.jsonl\n.omc/state/sessions/80f3200d-572d-4a4e-b43d-794469716689/subagent-tracking-state.json\n.omc/state/sessions/80f3200d-572d-4a4e-b43d-794469716689/session-started.json\n---\n---check global gitignore---",
+  "timestamp": "2026-07-21T18:50:38.002Z",
+  "retry_count": 1
+}

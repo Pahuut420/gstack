@@ -1,0 +1,975 @@
+{
+  "version": "1.0.0",
+  "lastScanned": 1784658397917,
+  "projectRoot": "/home/pahuut/.cline/worktrees/39bcb/gstack",
+  "techStack": {
+    "languages": [
+      {
+        "name": "JavaScript/TypeScript",
+        "version": null,
+        "confidence": "high",
+        "markers": [
+          "package.json"
+        ]
+      }
+    ],
+    "frameworks": [
+      {
+        "name": "playwright",
+        "version": "1.58.2",
+        "category": "testing"
+      }
+    ],
+    "packageManager": "npm",
+    "runtime": null
+  },
+  "build": {
+    "buildCommand": "npm run build",
+    "testCommand": "npm test",
+    "lintCommand": null,
+    "devCommand": "npm run dev",
+    "scripts": {
+      "build": "bash scripts/build.sh",
+      "vendor:xterm": "mkdir -p extension/lib && cp node_modules/xterm/lib/xterm.js extension/lib/xterm.js && cp node_modules/xterm/css/xterm.css extension/lib/xterm.css && cp node_modules/xterm-addon-fit/lib/xterm-addon-fit.js extension/lib/xterm-addon-fit.js",
+      "dev:make-pdf": "bun run make-pdf/src/cli.ts",
+      "dev:design": "bun run design/src/cli.ts",
+      "build:diagram-render": "cd lib/diagram-render && bun install && bun run scripts/build.ts",
+      "gen:skill-docs": "bun run scripts/gen-skill-docs.ts",
+      "gen:skill-docs:user": "bun run scripts/gen-skill-docs.ts --respect-detection",
+      "dev": "bun run browse/src/cli.ts",
+      "server": "bun run browse/src/server.ts",
+      "test": "bun test browse/test/ test/ make-pdf/test/ --ignore 'test/skill-e2e-*.test.ts' --ignore test/skill-llm-eval.test.ts --ignore test/skill-routing-e2e.test.ts --ignore test/codex-e2e.test.ts --ignore test/gemini-e2e.test.ts && (bun run slop:diff 2>/dev/null || true)",
+      "test:free": "bun run scripts/test-free-shards.ts",
+      "test:windows": "bun run scripts/test-free-shards.ts --windows-only",
+      "test:evals": "EVALS=1 bun test --retry 2 --concurrent --max-concurrency ${EVALS_CONCURRENCY:-15} test/skill-llm-eval.test.ts test/skill-e2e-*.test.ts test/skill-routing-e2e.test.ts test/codex-e2e.test.ts test/gemini-e2e.test.ts",
+      "test:evals:all": "EVALS=1 EVALS_ALL=1 bun test --retry 2 --concurrent --max-concurrency ${EVALS_CONCURRENCY:-15} test/skill-llm-eval.test.ts test/skill-e2e-*.test.ts test/skill-routing-e2e.test.ts test/codex-e2e.test.ts test/gemini-e2e.test.ts",
+      "test:e2e": "EVALS=1 bun test --retry 2 --concurrent --max-concurrency ${EVALS_CONCURRENCY:-15} test/skill-e2e-*.test.ts test/skill-routing-e2e.test.ts test/codex-e2e.test.ts test/gemini-e2e.test.ts",
+      "test:e2e:all": "EVALS=1 EVALS_ALL=1 bun test --retry 2 --concurrent --max-concurrency ${EVALS_CONCURRENCY:-15} test/skill-e2e-*.test.ts test/skill-routing-e2e.test.ts test/codex-e2e.test.ts test/gemini-e2e.test.ts",
+      "test:gate": "EVALS=1 EVALS_TIER=gate bun test --retry 2 --concurrent --max-concurrency ${EVALS_CONCURRENCY:-15} test/skill-llm-eval.test.ts test/skill-e2e-*.test.ts test/skill-routing-e2e.test.ts test/codex-e2e.test.ts test/gemini-e2e.test.ts",
+      "test:periodic": "EVALS=1 EVALS_TIER=periodic EVALS_ALL=1 bun test --retry 2 --concurrent --max-concurrency ${EVALS_CONCURRENCY:-15} test/skill-e2e-*.test.ts test/skill-routing-e2e.test.ts test/codex-e2e.test.ts test/gemini-e2e.test.ts",
+      "test:codex": "EVALS=1 bun test test/codex-e2e.test.ts",
+      "test:codex:all": "EVALS=1 EVALS_ALL=1 bun test test/codex-e2e.test.ts",
+      "test:gemini": "EVALS=1 bun test test/gemini-e2e.test.ts",
+      "test:gemini:all": "EVALS=1 EVALS_ALL=1 bun test test/gemini-e2e.test.ts",
+      "skill:check": "bun run scripts/skill-check.ts",
+      "dev:skill": "bun run scripts/dev-skill.ts",
+      "start": "bun run browse/src/server.ts",
+      "eval:bg": "bin/gstack-detach --label evals --lock gstack-evals --timeout 5400 -- bun run test:evals",
+      "eval:bg:all": "bin/gstack-detach --label evals-all --lock gstack-evals --timeout 7200 -- bun run test:evals:all",
+      "eval:bg:gate": "bin/gstack-detach --label evals-gate --lock gstack-evals --timeout 3600 -- bun run test:gate",
+      "eval:bg:periodic": "bin/gstack-detach --label evals-periodic --lock gstack-evals --timeout 5400 -- bun run test:periodic",
+      "eval:list": "bun run scripts/eval-list.ts",
+      "eval:compare": "bun run scripts/eval-compare.ts",
+      "eval:summary": "bun run scripts/eval-summary.ts",
+      "eval:watch": "bun run scripts/eval-watch.ts",
+      "eval:select": "bun run scripts/eval-select.ts",
+      "analytics": "bun run scripts/analytics.ts",
+      "test:audit": "bun test test/audit-compliance.test.ts",
+      "slop": "npx slop-scan scan . 2>/dev/null || echo 'slop-scan not available (install with: npm i -g slop-scan)'",
+      "slop:diff": "bun run scripts/slop-diff.ts"
+    }
+  },
+  "conventions": {
+    "namingStyle": "camelCase",
+    "importStyle": null,
+    "testPattern": "*.test.ts",
+    "fileOrganization": null
+  },
+  "structure": {
+    "isMonorepo": false,
+    "workspaces": [],
+    "mainDirectories": [
+      "bin",
+      "docs",
+      "lib",
+      "scripts",
+      "spec",
+      "test"
+    ],
+    "gitBranches": {
+      "defaultBranch": "main",
+      "branchingStrategy": null
+    }
+  },
+  "customNotes": [],
+  "directoryMap": {
+    "agents": {
+      "path": "agents",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1784658397851,
+      "keyFiles": [
+        "openai.yaml"
+      ]
+    },
+    "autoplan": {
+      "path": "autoplan",
+      "purpose": null,
+      "fileCount": 2,
+      "lastAccessed": 1784658397853,
+      "keyFiles": [
+        "SKILL.md",
+        "SKILL.md.tmpl"
+      ]
+    },
+    "benchmark": {
+      "path": "benchmark",
+      "purpose": null,
+      "fileCount": 2,
+      "lastAccessed": 1784658397860,
+      "keyFiles": [
+        "SKILL.md",
+        "SKILL.md.tmpl"
+      ]
+    },
+    "benchmark-models": {
+      "path": "benchmark-models",
+      "purpose": null,
+      "fileCount": 2,
+      "lastAccessed": 1784658397864,
+      "keyFiles": [
+        "SKILL.md",
+        "SKILL.md.tmpl"
+      ]
+    },
+    "bin": {
+      "path": "bin",
+      "purpose": "Executable scripts",
+      "fileCount": 74,
+      "lastAccessed": 1784658397866,
+      "keyFiles": [
+        "chrome-cdp",
+        "dev-setup",
+        "dev-teardown",
+        "gstack-analytics",
+        "gstack-artifacts-init"
+      ]
+    },
+    "browse": {
+      "path": "browse",
+      "purpose": null,
+      "fileCount": 3,
+      "lastAccessed": 1784658397867,
+      "keyFiles": [
+        "PLAN-snapshot-dropdown-interactive.md",
+        "SKILL.md",
+        "SKILL.md.tmpl"
+      ]
+    },
+    "browser-skills": {
+      "path": "browser-skills",
+      "purpose": null,
+      "fileCount": 0,
+      "lastAccessed": 1784658397868,
+      "keyFiles": []
+    },
+    "canary": {
+      "path": "canary",
+      "purpose": null,
+      "fileCount": 2,
+      "lastAccessed": 1784658397868,
+      "keyFiles": [
+        "SKILL.md",
+        "SKILL.md.tmpl"
+      ]
+    },
+    "careful": {
+      "path": "careful",
+      "purpose": null,
+      "fileCount": 2,
+      "lastAccessed": 1784658397868,
+      "keyFiles": [
+        "SKILL.md",
+        "SKILL.md.tmpl"
+      ]
+    },
+    "claude": {
+      "path": "claude",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1784658397869,
+      "keyFiles": [
+        "SKILL.md.tmpl"
+      ]
+    },
+    "codex": {
+      "path": "codex",
+      "purpose": null,
+      "fileCount": 2,
+      "lastAccessed": 1784658397869,
+      "keyFiles": [
+        "SKILL.md",
+        "SKILL.md.tmpl"
+      ]
+    },
+    "context-restore": {
+      "path": "context-restore",
+      "purpose": null,
+      "fileCount": 2,
+      "lastAccessed": 1784658397869,
+      "keyFiles": [
+        "SKILL.md",
+        "SKILL.md.tmpl"
+      ]
+    },
+    "context-save": {
+      "path": "context-save",
+      "purpose": null,
+      "fileCount": 2,
+      "lastAccessed": 1784658397869,
+      "keyFiles": [
+        "SKILL.md",
+        "SKILL.md.tmpl"
+      ]
+    },
+    "contrib": {
+      "path": "contrib",
+      "purpose": null,
+      "fileCount": 0,
+      "lastAccessed": 1784658397870,
+      "keyFiles": []
+    },
+    "cso": {
+      "path": "cso",
+      "purpose": null,
+      "fileCount": 3,
+      "lastAccessed": 1784658397870,
+      "keyFiles": [
+        "ACKNOWLEDGEMENTS.md",
+        "SKILL.md",
+        "SKILL.md.tmpl"
+      ]
+    },
+    "design": {
+      "path": "design",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1784658397871,
+      "keyFiles": [
+        "prototype.ts"
+      ]
+    },
+    "design-consultation": {
+      "path": "design-consultation",
+      "purpose": null,
+      "fileCount": 2,
+      "lastAccessed": 1784658397871,
+      "keyFiles": [
+        "SKILL.md",
+        "SKILL.md.tmpl"
+      ]
+    },
+    "design-html": {
+      "path": "design-html",
+      "purpose": null,
+      "fileCount": 2,
+      "lastAccessed": 1784658397871,
+      "keyFiles": [
+        "SKILL.md",
+        "SKILL.md.tmpl"
+      ]
+    },
+    "design-review": {
+      "path": "design-review",
+      "purpose": null,
+      "fileCount": 2,
+      "lastAccessed": 1784658397871,
+      "keyFiles": [
+        "SKILL.md",
+        "SKILL.md.tmpl"
+      ]
+    },
+    "design-shotgun": {
+      "path": "design-shotgun",
+      "purpose": null,
+      "fileCount": 2,
+      "lastAccessed": 1784658397871,
+      "keyFiles": [
+        "SKILL.md",
+        "SKILL.md.tmpl"
+      ]
+    },
+    "devex-review": {
+      "path": "devex-review",
+      "purpose": null,
+      "fileCount": 2,
+      "lastAccessed": 1784658397872,
+      "keyFiles": [
+        "SKILL.md",
+        "SKILL.md.tmpl"
+      ]
+    },
+    "diagram": {
+      "path": "diagram",
+      "purpose": null,
+      "fileCount": 2,
+      "lastAccessed": 1784658397872,
+      "keyFiles": [
+        "SKILL.md",
+        "SKILL.md.tmpl"
+      ]
+    },
+    "docs": {
+      "path": "docs",
+      "purpose": "Documentation",
+      "fileCount": 16,
+      "lastAccessed": 1784658397872,
+      "keyFiles": [
+        "ADDING_A_HOST.md",
+        "ON_THE_LOC_CONTROVERSY.md",
+        "OPENCLAW.md",
+        "REMOTE_BROWSER_ACCESS.md",
+        "askuserquestion-cjk.md"
+      ]
+    },
+    "document-generate": {
+      "path": "document-generate",
+      "purpose": null,
+      "fileCount": 2,
+      "lastAccessed": 1784658397872,
+      "keyFiles": [
+        "SKILL.md",
+        "SKILL.md.tmpl"
+      ]
+    },
+    "document-release": {
+      "path": "document-release",
+      "purpose": null,
+      "fileCount": 2,
+      "lastAccessed": 1784658397873,
+      "keyFiles": [
+        "SKILL.md",
+        "SKILL.md.tmpl"
+      ]
+    },
+    "extension": {
+      "path": "extension",
+      "purpose": null,
+      "fileCount": 12,
+      "lastAccessed": 1784658397873,
+      "keyFiles": [
+        "background.js",
+        "content.css",
+        "content.js",
+        "inspector.css",
+        "inspector.js"
+      ]
+    },
+    "freeze": {
+      "path": "freeze",
+      "purpose": null,
+      "fileCount": 2,
+      "lastAccessed": 1784658397873,
+      "keyFiles": [
+        "SKILL.md",
+        "SKILL.md.tmpl"
+      ]
+    },
+    "gstack": {
+      "path": "gstack",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1784658397874,
+      "keyFiles": [
+        "llms.txt"
+      ]
+    },
+    "gstack-upgrade": {
+      "path": "gstack-upgrade",
+      "purpose": null,
+      "fileCount": 2,
+      "lastAccessed": 1784658397874,
+      "keyFiles": [
+        "SKILL.md",
+        "SKILL.md.tmpl"
+      ]
+    },
+    "guard": {
+      "path": "guard",
+      "purpose": null,
+      "fileCount": 2,
+      "lastAccessed": 1784658397876,
+      "keyFiles": [
+        "SKILL.md",
+        "SKILL.md.tmpl"
+      ]
+    },
+    "health": {
+      "path": "health",
+      "purpose": null,
+      "fileCount": 2,
+      "lastAccessed": 1784658397876,
+      "keyFiles": [
+        "SKILL.md",
+        "SKILL.md.tmpl"
+      ]
+    },
+    "hosts": {
+      "path": "hosts",
+      "purpose": null,
+      "fileCount": 11,
+      "lastAccessed": 1784658397876,
+      "keyFiles": [
+        "claude.ts",
+        "codex.ts",
+        "cursor.ts",
+        "factory.ts",
+        "gbrain.ts"
+      ]
+    },
+    "investigate": {
+      "path": "investigate",
+      "purpose": null,
+      "fileCount": 2,
+      "lastAccessed": 1784658397876,
+      "keyFiles": [
+        "SKILL.md",
+        "SKILL.md.tmpl"
+      ]
+    },
+    "ios-clean": {
+      "path": "ios-clean",
+      "purpose": null,
+      "fileCount": 2,
+      "lastAccessed": 1784658397876,
+      "keyFiles": [
+        "SKILL.md",
+        "SKILL.md.tmpl"
+      ]
+    },
+    "ios-design-review": {
+      "path": "ios-design-review",
+      "purpose": null,
+      "fileCount": 2,
+      "lastAccessed": 1784658397876,
+      "keyFiles": [
+        "SKILL.md",
+        "SKILL.md.tmpl"
+      ]
+    },
+    "ios-fix": {
+      "path": "ios-fix",
+      "purpose": null,
+      "fileCount": 2,
+      "lastAccessed": 1784658397876,
+      "keyFiles": [
+        "SKILL.md",
+        "SKILL.md.tmpl"
+      ]
+    },
+    "ios-qa": {
+      "path": "ios-qa",
+      "purpose": null,
+      "fileCount": 2,
+      "lastAccessed": 1784658397876,
+      "keyFiles": [
+        "SKILL.md",
+        "SKILL.md.tmpl"
+      ]
+    },
+    "ios-sync": {
+      "path": "ios-sync",
+      "purpose": null,
+      "fileCount": 2,
+      "lastAccessed": 1784658397876,
+      "keyFiles": [
+        "SKILL.md",
+        "SKILL.md.tmpl"
+      ]
+    },
+    "land-and-deploy": {
+      "path": "land-and-deploy",
+      "purpose": null,
+      "fileCount": 2,
+      "lastAccessed": 1784658397877,
+      "keyFiles": [
+        "SKILL.md",
+        "SKILL.md.tmpl"
+      ]
+    },
+    "landing-report": {
+      "path": "landing-report",
+      "purpose": null,
+      "fileCount": 2,
+      "lastAccessed": 1784658397877,
+      "keyFiles": [
+        "SKILL.md",
+        "SKILL.md.tmpl"
+      ]
+    },
+    "learn": {
+      "path": "learn",
+      "purpose": null,
+      "fileCount": 2,
+      "lastAccessed": 1784658397877,
+      "keyFiles": [
+        "SKILL.md",
+        "SKILL.md.tmpl"
+      ]
+    },
+    "lib": {
+      "path": "lib",
+      "purpose": "Library code",
+      "fileCount": 16,
+      "lastAccessed": 1784658397877,
+      "keyFiles": [
+        "bin-context.ts",
+        "conductor-env-shim.ts",
+        "gbrain-exec.ts",
+        "gbrain-guards.ts",
+        "gbrain-local-status.ts"
+      ]
+    },
+    "make-pdf": {
+      "path": "make-pdf",
+      "purpose": null,
+      "fileCount": 2,
+      "lastAccessed": 1784658397877,
+      "keyFiles": [
+        "SKILL.md",
+        "SKILL.md.tmpl"
+      ]
+    },
+    "model-overlays": {
+      "path": "model-overlays",
+      "purpose": null,
+      "fileCount": 6,
+      "lastAccessed": 1784658397877,
+      "keyFiles": [
+        "claude.md",
+        "gemini.md",
+        "gpt-5.4.md",
+        "gpt.md",
+        "o-series.md"
+      ]
+    },
+    "office-hours": {
+      "path": "office-hours",
+      "purpose": null,
+      "fileCount": 2,
+      "lastAccessed": 1784658397878,
+      "keyFiles": [
+        "SKILL.md",
+        "SKILL.md.tmpl"
+      ]
+    },
+    "open-gstack-browser": {
+      "path": "open-gstack-browser",
+      "purpose": null,
+      "fileCount": 2,
+      "lastAccessed": 1784658397880,
+      "keyFiles": [
+        "SKILL.md",
+        "SKILL.md.tmpl"
+      ]
+    },
+    "openclaw": {
+      "path": "openclaw",
+      "purpose": null,
+      "fileCount": 4,
+      "lastAccessed": 1784658397889,
+      "keyFiles": [
+        "agents-gstack-section.md",
+        "gstack-full-CLAUDE.md",
+        "gstack-lite-CLAUDE.md",
+        "gstack-plan-CLAUDE.md"
+      ]
+    },
+    "pair-agent": {
+      "path": "pair-agent",
+      "purpose": null,
+      "fileCount": 2,
+      "lastAccessed": 1784658397893,
+      "keyFiles": [
+        "SKILL.md",
+        "SKILL.md.tmpl"
+      ]
+    },
+    "plan-ceo-review": {
+      "path": "plan-ceo-review",
+      "purpose": null,
+      "fileCount": 2,
+      "lastAccessed": 1784658397893,
+      "keyFiles": [
+        "SKILL.md",
+        "SKILL.md.tmpl"
+      ]
+    },
+    "plan-design-review": {
+      "path": "plan-design-review",
+      "purpose": null,
+      "fileCount": 2,
+      "lastAccessed": 1784658397894,
+      "keyFiles": [
+        "SKILL.md",
+        "SKILL.md.tmpl"
+      ]
+    },
+    "plan-devex-review": {
+      "path": "plan-devex-review",
+      "purpose": null,
+      "fileCount": 3,
+      "lastAccessed": 1784658397896,
+      "keyFiles": [
+        "SKILL.md",
+        "SKILL.md.tmpl",
+        "dx-hall-of-fame.md"
+      ]
+    },
+    "plan-eng-review": {
+      "path": "plan-eng-review",
+      "purpose": null,
+      "fileCount": 2,
+      "lastAccessed": 1784658397896,
+      "keyFiles": [
+        "SKILL.md",
+        "SKILL.md.tmpl"
+      ]
+    },
+    "plan-tune": {
+      "path": "plan-tune",
+      "purpose": null,
+      "fileCount": 2,
+      "lastAccessed": 1784658397896,
+      "keyFiles": [
+        "SKILL.md",
+        "SKILL.md.tmpl"
+      ]
+    },
+    "qa": {
+      "path": "qa",
+      "purpose": null,
+      "fileCount": 2,
+      "lastAccessed": 1784658397896,
+      "keyFiles": [
+        "SKILL.md",
+        "SKILL.md.tmpl"
+      ]
+    },
+    "qa-only": {
+      "path": "qa-only",
+      "purpose": null,
+      "fileCount": 2,
+      "lastAccessed": 1784658397896,
+      "keyFiles": [
+        "SKILL.md",
+        "SKILL.md.tmpl"
+      ]
+    },
+    "retro": {
+      "path": "retro",
+      "purpose": null,
+      "fileCount": 2,
+      "lastAccessed": 1784658397896,
+      "keyFiles": [
+        "SKILL.md",
+        "SKILL.md.tmpl"
+      ]
+    },
+    "review": {
+      "path": "review",
+      "purpose": null,
+      "fileCount": 6,
+      "lastAccessed": 1784658397896,
+      "keyFiles": [
+        "SKILL.md",
+        "SKILL.md.tmpl",
+        "TODOS-format.md",
+        "checklist.md",
+        "design-checklist.md"
+      ]
+    },
+    "scrape": {
+      "path": "scrape",
+      "purpose": null,
+      "fileCount": 2,
+      "lastAccessed": 1784658397897,
+      "keyFiles": [
+        "SKILL.md",
+        "SKILL.md.tmpl"
+      ]
+    },
+    "scripts": {
+      "path": "scripts",
+      "purpose": "Build/utility scripts",
+      "fileCount": 36,
+      "lastAccessed": 1784658397899,
+      "keyFiles": [
+        "analytics.ts",
+        "archetypes.ts",
+        "brain-cache-spec.ts",
+        "build-app.sh",
+        "build.sh"
+      ]
+    },
+    "setup-browser-cookies": {
+      "path": "setup-browser-cookies",
+      "purpose": null,
+      "fileCount": 2,
+      "lastAccessed": 1784658397900,
+      "keyFiles": [
+        "SKILL.md",
+        "SKILL.md.tmpl"
+      ]
+    },
+    "setup-deploy": {
+      "path": "setup-deploy",
+      "purpose": null,
+      "fileCount": 2,
+      "lastAccessed": 1784658397900,
+      "keyFiles": [
+        "SKILL.md",
+        "SKILL.md.tmpl"
+      ]
+    },
+    "setup-gbrain": {
+      "path": "setup-gbrain",
+      "purpose": null,
+      "fileCount": 3,
+      "lastAccessed": 1784658397900,
+      "keyFiles": [
+        "SKILL.md",
+        "SKILL.md.tmpl",
+        "memory.md"
+      ]
+    },
+    "ship": {
+      "path": "ship",
+      "purpose": null,
+      "fileCount": 2,
+      "lastAccessed": 1784658397903,
+      "keyFiles": [
+        "SKILL.md",
+        "SKILL.md.tmpl"
+      ]
+    },
+    "skillify": {
+      "path": "skillify",
+      "purpose": null,
+      "fileCount": 2,
+      "lastAccessed": 1784658397903,
+      "keyFiles": [
+        "SKILL.md",
+        "SKILL.md.tmpl"
+      ]
+    },
+    "spec": {
+      "path": "spec",
+      "purpose": "Test specifications",
+      "fileCount": 2,
+      "lastAccessed": 1784658397903,
+      "keyFiles": [
+        "SKILL.md",
+        "SKILL.md.tmpl"
+      ]
+    },
+    "supabase": {
+      "path": "supabase",
+      "purpose": null,
+      "fileCount": 2,
+      "lastAccessed": 1784658397903,
+      "keyFiles": [
+        "config.sh",
+        "verify-rls.sh"
+      ]
+    },
+    "sync-gbrain": {
+      "path": "sync-gbrain",
+      "purpose": null,
+      "fileCount": 2,
+      "lastAccessed": 1784658397904,
+      "keyFiles": [
+        "SKILL.md",
+        "SKILL.md.tmpl"
+      ]
+    },
+    "test": {
+      "path": "test",
+      "purpose": "Test files",
+      "fileCount": 280,
+      "lastAccessed": 1784658397904,
+      "keyFiles": [
+        "agent-sdk-runner.test.ts",
+        "analytics.test.ts",
+        "artifacts-init-migration.test.ts",
+        "audit-compliance.test.ts",
+        "auq-error-fallback-hook.test.ts"
+      ]
+    },
+    "unfreeze": {
+      "path": "unfreeze",
+      "purpose": null,
+      "fileCount": 2,
+      "lastAccessed": 1784658397906,
+      "keyFiles": [
+        "SKILL.md",
+        "SKILL.md.tmpl"
+      ]
+    },
+    "browse/bin": {
+      "path": "browse/bin",
+      "purpose": "Executable scripts",
+      "fileCount": 2,
+      "lastAccessed": 1784658397906,
+      "keyFiles": [
+        "find-browse",
+        "remote-slug"
+      ]
+    },
+    "browse/scripts": {
+      "path": "browse/scripts",
+      "purpose": "Build/utility scripts",
+      "fileCount": 1,
+      "lastAccessed": 1784658397906,
+      "keyFiles": [
+        "build-node-server.sh"
+      ]
+    },
+    "browse/src": {
+      "path": "browse/src",
+      "purpose": "Source code",
+      "fileCount": 65,
+      "lastAccessed": 1784658397906,
+      "keyFiles": [
+        "activity.ts",
+        "audit.ts",
+        "browse-client.ts"
+      ]
+    },
+    "browse/test": {
+      "path": "browse/test",
+      "purpose": "Test files",
+      "fileCount": 124,
+      "lastAccessed": 1784658397906,
+      "keyFiles": [
+        "activity.test.ts",
+        "adversarial-security.test.ts",
+        "batch.test.ts"
+      ]
+    },
+    "careful/bin": {
+      "path": "careful/bin",
+      "purpose": "Executable scripts",
+      "fileCount": 1,
+      "lastAccessed": 1784658397906,
+      "keyFiles": [
+        "check-careful.sh"
+      ]
+    },
+    "design/src": {
+      "path": "design/src",
+      "purpose": "Source code",
+      "fileCount": 19,
+      "lastAccessed": 1784658397907,
+      "keyFiles": [
+        "auth.ts",
+        "brief.ts",
+        "check.ts"
+      ]
+    },
+    "design/test": {
+      "path": "design/test",
+      "purpose": "Test files",
+      "fileCount": 9,
+      "lastAccessed": 1784658397907,
+      "keyFiles": [
+        "auth.test.ts",
+        "daemon-discovery.test.ts",
+        "daemon-tests-fixtures.ts"
+      ]
+    },
+    "design-html/vendor": {
+      "path": "design-html/vendor",
+      "purpose": "Third-party code",
+      "fileCount": 1,
+      "lastAccessed": 1784658397907,
+      "keyFiles": [
+        "pretext.js"
+      ]
+    },
+    "freeze/bin": {
+      "path": "freeze/bin",
+      "purpose": "Executable scripts",
+      "fileCount": 1,
+      "lastAccessed": 1784658397907,
+      "keyFiles": [
+        "check-freeze.sh"
+      ]
+    },
+    "gstack-upgrade/migrations": {
+      "path": "gstack-upgrade/migrations",
+      "purpose": "Database migrations",
+      "fileCount": 10,
+      "lastAccessed": 1784658397907,
+      "keyFiles": [
+        "v0.15.2.0.sh",
+        "v0.16.2.0.sh",
+        "v1.0.0.0.sh"
+      ]
+    },
+    "ios-qa/docs": {
+      "path": "ios-qa/docs",
+      "purpose": "Documentation",
+      "fileCount": 1,
+      "lastAccessed": 1784658397910,
+      "keyFiles": [
+        "tailscale-acl-example.md"
+      ]
+    },
+    "ios-qa/scripts": {
+      "path": "ios-qa/scripts",
+      "purpose": "Build/utility scripts",
+      "fileCount": 2,
+      "lastAccessed": 1784658397910,
+      "keyFiles": [
+        "gen-accessors.test.ts",
+        "gen-accessors.ts"
+      ]
+    },
+    "make-pdf/src": {
+      "path": "make-pdf/src",
+      "purpose": "Source code",
+      "fileCount": 13,
+      "lastAccessed": 1784658397910,
+      "keyFiles": [
+        "browseClient.ts",
+        "cli.ts",
+        "commands.ts"
+      ]
+    },
+    "make-pdf/test": {
+      "path": "make-pdf/test",
+      "purpose": "Test files",
+      "fileCount": 6,
+      "lastAccessed": 1784658397910,
+      "keyFiles": [
+        "browseClient.test.ts",
+        "coverage-gaps.test.ts",
+        "diagram-prepass.test.ts"
+      ]
+    },
+    "scripts/app": {
+      "path": "scripts/app",
+      "purpose": "Application code",
+      "fileCount": 2,
+      "lastAccessed": 1784658397912,
+      "keyFiles": [
+        "gstack-browser",
+        "icon.icns"
+      ]
+    },
+    "supabase/migrations": {
+      "path": "supabase/migrations",
+      "purpose": "Database migrations",
+      "fileCount": 4,
+      "lastAccessed": 1784658397916,
+      "keyFiles": [
+        "001_telemetry.sql",
+        "002_tighten_rls.sql",
+        "003_installations_upsert_policy.sql"
+      ]
+    }
+  },
+  "hotPaths": [],
+  "userDirectives": []
+}
